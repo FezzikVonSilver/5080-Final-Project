@@ -9,6 +9,11 @@ For Chrisofides algorithm to work, distances between nodes in the graph must for
 
    - Also, dist(u,v) = dist(v,u), and dist(u,v) > 0 
 
+From final project specification on canvas: (input: an integer n denoting the number of vertices in the graphs; 
+graphs are to be generated randomly, with edge weights between 1-20; initial graphs 
+have to be output in the visualization)
+
+### 0. Generate random graph given number of nodes n (w/ edge weights b/t 1-20)
 
 ### 1. Find a minimum spanning tree (T) 
 
@@ -70,5 +75,4 @@ Questions and proofs to give/explain:
 11. How should we implement this algorithm in Python? 
 
 12. How should we create a visualization of this algorithm? 
-
- 
+	- Should we show all steps for each larger step (e.g. find MST), or just show the resulting graph of each larger step?

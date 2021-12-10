@@ -12,10 +12,6 @@ from networkx.algorithms.approximation.traveling_salesman import christofides
 import matplotlib.pyplot as plt
 
 
-
-
-
-
 g = rmg.randCompleteMetricGraph(10)
 
 # convert the Graph adjacency matrix array to a numpy matrix of the edges
@@ -29,6 +25,9 @@ nx.draw_networkx(g3, node_size=200)
 
 # display the graph
 plt.show()
+
+
+## FOR FUTURE TESTING, NETWORKX TSP CALL
 
 # create a TSP object to use
 tsp = nx.approximation.traveling_salesman_problem

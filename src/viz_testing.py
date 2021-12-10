@@ -69,7 +69,7 @@ nx.draw_networkx(g3, pos)
 plt.show()
 
 
-# Get a shortest path (this will be only 1 edge long as the graph is complete)
+# Get a shortest path (this will be only 1 edge long as the graph is complete) 
 path = nx.shortest_path(g3,source=1,target=7)
 path_edges = list(zip(path,path[1:]))
 
@@ -77,7 +77,6 @@ path_edges = list(zip(path,path[1:]))
 nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes)-set(path))
 # draw the edges not in the shortest path
 nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
-
 
 # Draw nodes and edges included in path, both as red
 nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='r')
@@ -87,12 +86,23 @@ nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyl
 plt.show()
 
 
-
 # create a TSP object to use
 tsp = nx.approximation.traveling_salesman_problem
 
 # run the TSP function using Christofides and save the path
 path = tsp(g3, cycle=False, method=christofides)
-print(path)
+# print(path)
+
+path_edges = list(zip(path,path[1:]))
+
+# draw the edges not in the TSP path
+# nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
+
+# Draw nodes and edges included in path, nodes blue and edges red
+nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='b')
+nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
+
+# display the graph
+plt.show()
 
 # plt.show()

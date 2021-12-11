@@ -1,6 +1,6 @@
 
 import random as r
-
+import numpy as np
 """
 Helper function to check that random edge obeys the triangle inequality/is metric space
 """
@@ -31,4 +31,4 @@ def randCompleteMetricGraph(n, w_rnge = (1,10)):
                     g[i][j] = r.randint(w_rnge[0], w_rnge[1])
     return g
 
-#g = randCompleteMetricGraph(10)
+g = randCompleteMetricGraph(10)

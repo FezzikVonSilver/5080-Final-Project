@@ -4,7 +4,7 @@ from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.matching import max_weight_matching
 
 """
-Return even degree vertices in graph G. (Chose Even instead of odd because easier to induce subgraph)
+Return even degree vertices in graph G as list. (Chose Even instead of odd because easier to induce subgraph)
 """
 def even_degree_vertices(G):
 	V = []
@@ -19,7 +19,7 @@ def even_degree_vertices(G):
 
 """
 Returns an induced subgraph containing vertices v in G-V. Has the same shape as
-original graph G to keep track of nodes. Rows/columns of nodes v in V are 0
+original graph G to keep track of nodes. Rows/columns of nodes v in V are 0. Return type is ndarray
 PARAMS- V: vertices to exclude G: original graph
 """
 def induced_subgraph(V,G):

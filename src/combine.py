@@ -36,7 +36,9 @@ PARAMS- G: adjacency matrix
 def perfect_match(G):
 	G = np.array(G)
 	gnx = nx.Graph(from_numpy_array(G))
-	
+
+    #this command wouldn't run for me I think my python is old, but try on your comp 
+	#gmin = min_weight_matching(gnx)
 	if len(gnx.edges) == 0:
 		return max_weight_matching(gnx)
     	    

@@ -50,7 +50,7 @@ def create_tour(M, G): #Every vertex in G must have even degree
             next_vertex = get_next_vertex(curr_vertex)
             if next_vertex != None:
                 edge_weight = G.get_edge_data(curr_vertex, next_vertex)[0]['weight']
-                tsp_tour.add_edge(curr_vertex, next_vertex, edge_weight)
+                tsp_tour.add_edge(curr_vertex, next_vertex, weight=edge_weight)
             else:
                 raise Exception("Graph is not eulerian; cannot find tour")
 

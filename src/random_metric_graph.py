@@ -23,15 +23,10 @@ w_rnge: default edge weight range is 1 to 10
 return: adjacency matrix representing complete metric graph
 """
 def randCompleteMetricGraph(n, w_rnge = (1,10)):
-    
     g = nx.MultiGraph()
-
     for i in range(n):
-
         g.add_node(i)
-
         for j in range(n):
-
             if i != j and not g.has_edge(i, j): # no self loops, no double edges
                 candidate_weight = r.randint(w_rnge[0], w_rnge[1])
 

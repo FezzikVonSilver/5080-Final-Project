@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.matching import max_weight_matching
-from min_span_tree import mst
+# from min_span_tree import mst
 """
 Return even degree vertices in graph G as list. (Chose Even instead of odd because easier to induce subgraph)
 """
@@ -68,10 +68,10 @@ def combine(T,G):
         T.add_edge(m[0], m[1], weight=g_edge_weight)
     return T
 
-import random_metric_graph as rmg
-g = rmg.randCompleteMetricGraph(4)
-print("original graph: " + str(g.adj) + '\n')
-t =  mst(g)
-print("mst: " + str(t.adj) + '\n')
-eulerian_graph = combine(t, g)
-print("combined: " + str(eulerian_graph.adj) + '\n')
+# import random_metric_graph as rmg
+# g = rmg.randCompleteMetricGraph(4)
+# print("original graph: " + str(g.adj) + '\n')
+# t =  mst(g)
+# print("mst: " + str(t.adj) + '\n')
+# eulerian_graph = combine(t, g)
+# print("combined: " + str(eulerian_graph.adj) + '\n')

@@ -13,7 +13,7 @@ def even_degree_vertices(G):
 		for j in range(len(G)):
 			if G[i,j] > 0:
 				count += 1
-		if count%2 is 0:
+		if count%2 == 0:
 			V.append(i)
 	return V
 

@@ -1,8 +1,8 @@
 import math
-import heapdict
+import heapdict as h
 import random as r
 import numpy as np
-
+import networkx as nx
 """
 Return's MST as ndarray
 """
@@ -23,33 +23,37 @@ def find_mst(G):
 	
 	cost[0] = 0 #tree will always start from node 0
 	
-	q = heapdict() #priority queue
+	q = h.heapdict() #priority queue
 	
 	for i in range(len(G)): #initialize priority queue based on cost values
 		q[i] = cost[i]
 	
 
 	
-	while len(q) is not 0: #update cost and prev
+	while len(q) != 0: #update cost and prev
 		v,c = q.popitem()
 		not_added = list(q.keys())
 		for i in not_added:
-			if G[v,i] is not 0:
-				if cost[i] > G[v,i]:
-					cost[i] = G[v,i]
+			if G.has_edge(v, i):
+				edge_weight = G.get_edge_data(v, i)[0]['weight']
+				if cost[i] > edge_weight:
+					cost[i] = edge_weight
 					prev[i] = v
 					q[i] = cost[i]
 	return prev,cost
 
 """
-Helper to construct tree. Returns ndarry adjacency matrix
+Helper to construct tree. Returns networkx multigraph
 """
 def construct_mst(prev,cost):
-    mst = np.zeros((len(prev),len(prev)))
+    mst = nx.MultiGraph()
+
     for i in range(len(prev)):
-        if prev[i] is not None:
-            mst[prev[i],i] = cost[i]
-            mst[i,prev[i]] = cost[i]
+        mst.add_node(i)
+        if prev[i] != None:
+            if not mst.has_node(prev[i]):
+                mst.add_node(prev[i])
+            mst.add_edge(i, prev[i], weight=cost[i])
     return mst
 		
 	

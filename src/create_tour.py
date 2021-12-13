@@ -44,7 +44,10 @@ def create_tour(M, G): #Every vertex in G must have even degree
     def get_tsp_tour():
         curr_vertex = 0 #starting vertex
 
+        tour = []
+
         while len(visited) <= len(G.nodes):
+            tour.append(curr_vertex)
             visited.add(curr_vertex) #mark vertex as visited
 
             next_vertex = get_next_vertex(curr_vertex)
@@ -59,6 +62,6 @@ def create_tour(M, G): #Every vertex in G must have even degree
             
             curr_vertex = next_vertex # visit next valid vertex
                 
-        return tsp_tour
+        return tour+[0]
 
     return get_tsp_tour()

@@ -1,7 +1,7 @@
 import numpy as np
 import networkx as nx
 from networkx.convert_matrix import from_numpy_array
-from networkx.algorithms.matching import max_weight_matching
+from networkx.algorithms.matching import min_weight_matching
 # from min_span_tree import mst
 """
 Return even degree vertices in graph G as list. (Chose Even instead of odd because easier to induce subgraph)
@@ -39,19 +39,19 @@ PARAMS- G: adjacency matrix
 """
 def perfect_match(G):
 	# G = np.array(G)
-	# gnx = nx.Graph(from_numpy_array(G))
+	gnx = nx.Graph(G)
 
     #this command wouldn't run for me I think my python is old, but try on your comp 
-	# gmin = min_weight_matching(gnx)
-	if len(G.edges) == 0:
-		return max_weight_matching(G)
+	gmin = min_weight_matching(gnx)
+	# if len(G.edges) == 0:
+	# 	return max_weight_matching(G)
     	    
-	G_edges = G.edges(data="weight", default=1)
-	min_weight = min([w for _, _, w in G_edges])
-	InvG = nx.MultiGraph()
-	edges = ((u, v, 1 / (1 + w - min_weight)) for u, v, w in G_edges)
-	InvG.add_weighted_edges_from(edges, weight="weight")
-	gmin = max_weight_matching(InvG)
+	# G_edges = G.edges(data="weight", default=1)
+	# min_weight = min([w for _, _, w in G_edges])
+	# InvG = nx.MultiGraph()
+	# edges = ((u, v, 1 / (1 + w - min_weight)) for u, v, w in G_edges)
+	# InvG.add_weighted_edges_from(edges, weight="weight")
+	# gmin = max_weight_matching(InvG)
 		
 	return gmin
 """
@@ -61,9 +61,9 @@ PARAMS- T:MST G:Original graph
 def combine(T,G):
     E = even_degree_vertices(T)
     S = induced_subgraph(E,G)
-    M = perfect_match(S)
+    M = nx.MultiGraph(perfect_match(S))
 
-    for m in M:
+    for m in M.edges:
         g_edge_weight = G.get_edge_data(m[0], m[1])[0]['weight']
         T.add_edge(m[0], m[1], weight=g_edge_weight)
     return T

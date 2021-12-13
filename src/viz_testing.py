@@ -1,12 +1,13 @@
 import random as r
-from networkx.convert_matrix import from_numpy_array
 import numpy as np
+import time
 
 # importing networkx
 import networkx as nx
-# importing matplotlib.pyplot
-import matplotlib.pyplot as plt
+from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.approximation.traveling_salesman import christofides
+# importing matplotlib.pyplot
+from matplotlib import pyplot as plt, animation
 
 
 """
@@ -53,56 +54,145 @@ g3 = nx.Graph(from_numpy_array(g2))
 pos = nx.spring_layout(g3, seed=123)
 
 
-# draw the nodes only for the graph
-nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes))
-# display the graph
-plt.show()
+# # draw the nodes only for the graph
+# nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes))
+# # display the graph
+# plt.show()
 
-# draw the edges only for the graph 
-nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges))
-# display the graph
-plt.show()
+# # draw the edges only for the graph 
+# nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges))
+# # display the graph
+# plt.show()
 
-# draw the full graph 
-nx.draw_networkx(g3, pos)
-# display the graph
-plt.show()
-
-
-# Get a shortest path (this will be only 1 edge long as the graph is complete) 
-path = nx.shortest_path(g3,source=1,target=7)
-path_edges = list(zip(path,path[1:]))
-
-# Draw nodes not in the shortest path
-nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes)-set(path))
-# draw the edges not in the shortest path
-nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
-
-# Draw nodes and edges included in path, both as red
-nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='r')
-nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
-
-# display the graph
-plt.show()
+# # draw the full graph 
+# nx.draw_networkx(g3, pos)
+# # display the graph
+# plt.show()
 
 
-# create a TSP object to use
-tsp = nx.approximation.traveling_salesman_problem
+# # Get a shortest path (this will be only 1 edge long as the graph is complete) 
+# path = nx.shortest_path(g3,source=1,target=7)
+# path_edges = list(zip(path,path[1:]))
 
-# run the TSP function using Christofides and save the path
-path = tsp(g3, cycle=False, method=christofides)
-# print(path)
-
-path_edges = list(zip(path,path[1:]))
-
-# draw the edges not in the TSP path
+# # Draw nodes and edges not in the shortest path
+# nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes)-set(path))
+# # draw the edges not in the shortest path
 # nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
 
-# Draw nodes and edges included in path, nodes blue and edges red
-nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='b')
-nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
+# # Draw nodes and edges included in path, both as red
+# nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='r')
+# nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
 
-# display the graph
+# # display the graph
+# plt.show()
+
+
+# # create a TSP object to use
+# tsp = nx.approximation.traveling_salesman_problem
+
+# # run the TSP function using Christofides and save the path
+# path = tsp(g3, cycle=False, method=christofides)
+# # print(path)
+
+# path_edges = list(zip(path,path[1:]))
+
+# # draw the edges not in the TSP path
+# # nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
+
+# # Draw nodes and edges included in path, nodes blue and edges red
+# nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='b')
+# nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
+
+# # display the graph
+# plt.show()
+
+# # plt.get
+# input("Press Enter to continue...")
+# plt.close()
+
+fig = plt.figure()
+
+
+nx.draw(g3, with_labels=True)
+# Function to animate a series of steps which can be displayed
+def animate(frame):
+    fig.clear()
+
+    # for i in range (6):
+    if frame <= 1:
+        # draw the nodes only for the graph
+        nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes))
+        plt.show()
+        # pause until user presses the Enter button
+        # input("Press Enter to continue...")
+        # time.sleep(5)
+
+    if frame == 2:
+        # draw the edges only for the graph 
+        nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges))
+        plt.show()
+        # pause until user presses the Enter button
+        # input("Press Enter to continue...")
+        # time.sleep(5)
+
+    if frame ==3:
+        # draw the full graph 
+        nx.draw_networkx(g3, pos)
+        plt.show()
+        # pause until user presses the Enter button
+        # input("Press Enter to continue...")
+        # time.sleep(5)
+
+    if frame ==4:
+        # Get a shortest path (this will be only 1 edge long as the graph is complete) 
+        path = nx.shortest_path(g3,source=1,target=7)
+        path_edges = list(zip(path,path[1:]))
+        # Draw nodes and edges not in the shortest path
+        nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes)-set(path))
+        nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
+        # Draw nodes and edges included in path, both as red
+        nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='r')
+        nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
+        plt.show()
+        # pause until user presses the Enter button
+        # input("Press Enter to continue...")
+        # time.sleep(5)
+
+    if frame >=5:
+        # create a TSP object to use
+        tsp = nx.approximation.traveling_salesman_problem
+        # run the TSP function using Christofides and save the path
+        path = tsp(g3, cycle=False, method=christofides)
+        # print(path)
+        # get the edges in a list
+        path_edges = list(zip(path,path[1:]))
+        # draw the edges not in the TSP path
+        # nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
+        # Draw nodes and edges included in path, nodes blue and edges red
+        nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='b')
+        nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
+        plt.show()
+        # pause until user presses the Enter button
+        # input("Press Enter to continue...")
+        # time.sleep(5)
+
+    
+    return
+
+# create the animation object
+ani = animation.FuncAnimation(fig, animate, frames=6, interval=1000, repeat=False)
 plt.show()
+# def animate2(frame):
+#     fig.clear()
 
+#     # for i in range (6):
+#     if frame <= 1:
+#         # draw the nodes only for the graph
+#         nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes))
+#         plt.show()
+#         # pause until user presses the Enter button
+#         # input("Press Enter to continue...")
+#         # time.sleep(5)
+
+# ani2 = animation.FuncAnimation(fig, animate2, frames=2, interval=3000, repeat=False)
 # plt.show()

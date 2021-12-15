@@ -67,24 +67,28 @@ def animate(frame):
         # draw the full graph 
         nx.draw_networkx(g, pos)
         plt.show()
+        plt.savefig("filename1.png")
         print("0 - Starting Graph")
 
     if frame == 1:
         # draw the MST of the graph 
         nx.draw_networkx(T, pos)
         plt.show()
+        plt.savefig("filename2.png")
         print("1 - MST")
 
     if frame == 2:
         # draw combined min-weight matching and MST
         nx.draw_networkx(M, pos)
         plt.show()
+        plt.savefig("filename3.png")
         print("2 - Min-Weight Matching & MST")
 
     if frame >= 3:
         # draw our TSP tour
         nx.draw_networkx(g_tsp, pos, edge_color='r')
         plt.show()
+        plt.savefig("filename4.png")
         # print(tsp_tour)
         # print(g_tsp)
         print("3 - TSP Tour")
@@ -121,5 +125,9 @@ def animate(frame):
 # create the animation object
 ani = animation.FuncAnimation(fig, animate, frames=4, interval=3000, repeat=False)
 
+
 # display the animation on screen in a popup window
 plt.show()
+
+# not set up correctly to work, animation does not include frame 0?
+# ani.save('test.gif', writer='imagemagick', savefig_kwargs={'facecolor':'white'}, fps=0.5)

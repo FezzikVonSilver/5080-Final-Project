@@ -1,108 +1,125 @@
 import random as r
-from networkx.convert_matrix import from_numpy_array
 import numpy as np
+import time
 
 # importing networkx
 import networkx as nx
-# importing matplotlib.pyplot
-import matplotlib.pyplot as plt
+from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.approximation.traveling_salesman import christofides
+# importing matplotlib.pyplot
+from matplotlib import pyplot as plt, animation
+
+# project file imports
+import random_metric_graph as rmg
+from min_span_tree import mst
+from combine import combine
+from create_tour import create_tour
 
 
 """
-Helper function to check that random edge obeys the triangle inequality/is metric space
+Function to create graph from the tsp_tour returned
+
+n: number of vertices in the complete tour
+TSP: the tour object
+
+return: a networkx graph object
 """
-def obeysMetric(g, i, j):
-    for k in range(len(g)):
-        # triangle inequality: edge weight w(i->j) should be less than or equal to w(i->k)+w(k->j)
-        if g[i][k] == 0 or g[j][k] == 0: 
-            continue
-        if g[i][k]+g[k][j] < g[i][j]:
-            return False
-    return True
+def translate_TSP_Tour(n, TSP):
+    g2 = nx.Graph()
 
-"""
-n: number of vertices in the complete graph
-w_rnge: default edge weight range is 1 to 10
+    for i in range (n):
+        g2.add_node(i)
 
-return: adjacency matrix representing complete metric graph
-"""
-def randCompleteMetricGraph(n, w_rnge = (1,10)):
-    g = [[0 for _ in range(n)] for _ in range(n)] # initialize adjacency matrix
-    for i in range(n):
-        for j in range(n):
-            if g[j][i] != 0: # matrix is symmetric b/c graph's undirected
-                g[i][j] = g[j][i]
-            elif i != j: #if vertex is not itself, create random edge
-                g[i][j] = r.randint(w_rnge[0], w_rnge[1])
-                while not obeysMetric(g, i, j):
-                    g[i][j] = r.randint(w_rnge[0], w_rnge[1])
-    return g
+    #Adds edges along with their weights to the graph 
+        for i in range(n-1) :
+                # dummy weight of one for the graph, not sure if needed?
+                g2.add_edge(TSP[i], TSP[i+1], weight = 1) 
+        return g2
 
+# create the starting random graph
+g = rmg.randCompleteMetricGraph(10)
 
-g = randCompleteMetricGraph(10)
+# set position using spring layout (this will result in the nodes displaying at the same position each time the same graph object is drawn if used in call)
+pos = nx.spring_layout(g, seed=123)
 
-# convert the Graph adjacency matrix array to a numpy matrix
-g2 = np.matrix(g)
+# get MST of g
+T = mst(g)
 
-# create a networkx graph from the numpy matrix
-g3 = nx.Graph(from_numpy_array(g2))
+# get combined
+M = combine(T, g)
+
+# get tour
+tsp_tour = create_tour(M, g)
+
+#translate to play nicely with drawing
+g_tsp = translate_TSP_Tour(11, tsp_tour)
 
 
-# set position using spring layout (this should result in the nodes displaying at the same position each time the same graph object is drawn if used in call)
-pos = nx.spring_layout(g3, seed=123)
+# create fig object for animation
+fig = plt.figure()
 
+# Function to animate steps in the TSP algorithm
+def animate(frame):
+    fig.clear()
 
-# draw the nodes only for the graph
-nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes))
-# display the graph
+    # for i in range (6):
+    if frame == 0:
+        # draw the full graph 
+        nx.draw_networkx(g, pos)
+        plt.show()
+        print("0 - Starting Graph")
+
+    if frame == 1:
+        # draw the MST of the graph 
+        nx.draw_networkx(T, pos)
+        plt.show()
+        print("1 - MST")
+
+    if frame == 2:
+        # draw combined min-weight matching and MST
+        nx.draw_networkx(M, pos)
+        plt.show()
+        print("2 - Min-Weight Matching & MST")
+
+    if frame >= 3:
+        # draw our TSP tour
+        nx.draw_networkx(g_tsp, pos, edge_color='r')
+        plt.show()
+        # print(tsp_tour)
+        # print(g_tsp)
+        print("3 - TSP Tour")
+
+    # if frame == 3:
+        # # Draw edges not in the tour
+        # nx.draw_networkx_edges(g, pos, edgelist=set(g.edges)-set(tsp_tour), connectionstyle='arc3, rad = 0.3')
+        # # Draw nodes and edges included in path, both as red
+        # # nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='r')
+        # nx.draw_networkx_nodes(g, pos, nodelist=tsp_tour)
+        # nx.draw_networkx_edges(g, pos, edgelist=tsp_tour,edge_color='r', connectionstyle='arc3, rad = 0.3')
+        # plt.show()
+        # print(3)
+
+    # if frame >= 4:
+    #     # create a TSP object to use
+    #     tsp = nx.approximation.traveling_salesman_problem
+    #     # run the TSP function using Christofides and save the path
+    #     path = tsp(g, cycle=True, method=christofides)
+    #     print(path)
+    #     # get the edges in a list
+    #     path_edges = list(zip(path,path[1:]))
+    #     # draw the edges not in the TSP path
+    #     # nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
+    #     # Draw nodes and edges included in path, nodes blue and edges red
+    #     # nx.draw_networkx_nodes(g2, pos, nodelist=path, node_color='b')
+    #     nx.draw_networkx_nodes(g, pos, nodelist=path)
+    #     nx.draw_networkx_edges(g,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
+    #     plt.show()
+    #     print("4 - networkx TSP")
+
+    return
+
+# create the animation object
+ani = animation.FuncAnimation(fig, animate, frames=4, interval=3000, repeat=False)
+
+# display the animation on screen in a popup window
 plt.show()
-
-# draw the edges only for the graph 
-nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges))
-# display the graph
-plt.show()
-
-# draw the full graph 
-nx.draw_networkx(g3, pos)
-# display the graph
-plt.show()
-
-
-# Get a shortest path (this will be only 1 edge long as the graph is complete) 
-path = nx.shortest_path(g3,source=1,target=7)
-path_edges = list(zip(path,path[1:]))
-
-# Draw nodes not in the shortest path
-nx.draw_networkx_nodes(g3, pos, nodelist=set(g3.nodes)-set(path))
-# draw the edges not in the shortest path
-nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
-
-# Draw nodes and edges included in path, both as red
-nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='r')
-nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
-
-# display the graph
-plt.show()
-
-
-# create a TSP object to use
-tsp = nx.approximation.traveling_salesman_problem
-
-# run the TSP function using Christofides and save the path
-path = tsp(g3, cycle=False, method=christofides)
-# print(path)
-
-path_edges = list(zip(path,path[1:]))
-
-# draw the edges not in the TSP path
-# nx.draw_networkx_edges(g3, pos, edgelist=set(g3.edges)-set(path_edges), connectionstyle='arc3, rad = 0.3')
-
-# Draw nodes and edges included in path, nodes blue and edges red
-nx.draw_networkx_nodes(g3, pos, nodelist=path, node_color='b')
-nx.draw_networkx_edges(g3,pos,edgelist=path_edges,edge_color='r', connectionstyle='arc3, rad = 0.3')
-
-# display the graph
-plt.show()
-
-# plt.show()

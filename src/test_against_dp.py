@@ -11,16 +11,6 @@ from christofides import get_cost
 
 
 
-
-
-
-
-
-
-
-
-
-
 def TSP(G):
 	n = len(G)
 	C = [[np.inf for _ in range(n)] for __ in range(1 << n)]
@@ -40,12 +30,6 @@ def TSP(G):
                                                #C[S−{i}][j]
 	all_index = (1 << n) - 1
 	return min([(C[all_index][i] + G[0][i], i) for i in range(n)])
-
-
-
-
-
-
 
 
 def test_against_DP(V):

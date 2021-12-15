@@ -68,10 +68,15 @@ def combine(T,G):
         T.add_edge(m[0], m[1], weight=g_edge_weight)
     return T
 
-# import random_metric_graph as rmg
-# g = rmg.randCompleteMetricGraph(4)
-# print("original graph: " + str(g.adj) + '\n')
-# t =  mst(g)
-# print("mst: " + str(t.adj) + '\n')
-# eulerian_graph = combine(t, g)
-# print("combined: " + str(eulerian_graph.adj) + '\n')
+
+# TEST PRINTS
+import random_metric_graph as rmg
+from min_span_tree import mst
+#main function
+if __name__ == "__main__":
+	g = rmg.randCompleteMetricGraph(4)
+	print("original graph: " + str(g.adj) + '\n')
+	t =  mst(g)
+	print("mst: " + str(t.adj) + '\n')
+	eulerian_graph = combine(t, g)
+	print("combined: " + str(eulerian_graph.adj) + '\n')

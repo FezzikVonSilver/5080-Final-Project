@@ -1,10 +1,19 @@
+from create_tour import create_tour
 import numpy as np
 import networkx as nx
 from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.matching import min_weight_matching
-# from min_span_tree import mst
+from min_span_tree import mst
+import random_metric_graph as rmg
+
+def print_weighted_multigraph(name, wg):
+	print(f"{name}: ")
+	for u,v,w in wg.edges:
+		edge_data = wg.get_edge_data(u,v)
+		print(f"{(u,v)}: {edge_data}")
+
 """
-Return even degree vertices in graph G as list. (Chose Even instead of odd because easier to induce subgraph)
+Return even degree vertices in MST graph as list. (Chose Even instead of odd because easier to induce subgraph)
 """
 def even_degree_vertices(G):
 	V = []
@@ -29,9 +38,9 @@ def induced_subgraph(V,G):
     # S[:,V] = 0
     G = G.copy()
 
-	#remove odd vertices from multigraph
-    for odd_node in V:	
-        G.remove_node(odd_node)
+	#remove even vertices from multigraph
+    for even_node in V:	
+        G.remove_node(even_node)
     return G 
 """
 Networkx min-weight perfect matching, returns a set of paris of vertices
@@ -41,37 +50,45 @@ def perfect_match(G):
 	# G = np.array(G)
 	gnx = nx.Graph(G)
 
-    #this command wouldn't run for me I think my python is old, but try on your comp 
-	gmin = min_weight_matching(gnx)
-	# if len(G.edges) == 0:
-	# 	return max_weight_matching(G)
-    	    
-	# G_edges = G.edges(data="weight", default=1)
-	# min_weight = min([w for _, _, w in G_edges])
-	# InvG = nx.MultiGraph()
-	# edges = ((u, v, 1 / (1 + w - min_weight)) for u, v, w in G_edges)
-	# InvG.add_weighted_edges_from(edges, weight="weight")
-	# gmin = max_weight_matching(InvG)
-		
-	return gmin
+	return min_weight_matching(gnx)
 """
 Add min-weight perfect matching to MST, returns the combined graph as a ndarray.
 PARAMS- T:MST G:Original graph
 """
 def combine(T,G):
     E = even_degree_vertices(T)
-    S = induced_subgraph(E,G)
-    M = nx.MultiGraph(perfect_match(S))
+    S = induced_subgraph(E,G) #create graph composed of all edges (in whole graph), but only b/t the odd deg. nodes in MST
+    # print("induced subgraph: " + str(S.edges))
+    M = perfect_match(S) # get min perfect matching between those nodes
+    # print("perfect match: " + str(M))
 
-    for m in M.edges:
-        g_edge_weight = G.get_edge_data(m[0], m[1])[0]['weight']
-        T.add_edge(m[0], m[1], weight=g_edge_weight)
-    return T
+    combined_graph = nx.MultiGraph(T) # convert the MST to a multigraph
+    # add edges from perfecting matching to the MST multigraph; 
+	# if all edges are added, all nodes of the resulting graph should have even degree
+    for edge in M:
+        u, v = edge
+        weight = G[u][v]['weight']
+        combined_graph.add_edge(u, v, weight = weight)
+    return combined_graph
 
-# import random_metric_graph as rmg
+
+def span_root_example(): #creates an MST with root 0 having 3 edges
+	example = [(0, 1, 2), (0, 2, 2), (0, 3, 1), (1, 2, 4), (1, 3, 2), (2, 3, 2)]
+	newG = nx.Graph()
+	newG.add_weighted_edges_from(example)
+	return newG
+	# print("g: " + str([(u,v,newG[u][v]['weight']) for u,v in newG.edges]))
+
+def print_weighted_graph(name, g):
+	print(f"{name}: {[(u,v,g[u][v]['weight']) for u,v in g.edges]}")
+
+
 # g = rmg.randCompleteMetricGraph(4)
-# print("original graph: " + str(g.adj) + '\n')
-# t =  mst(g)
-# print("mst: " + str(t.adj) + '\n')
-# eulerian_graph = combine(t, g)
-# print("combined: " + str(eulerian_graph.adj) + '\n')
+g = span_root_example()
+print_weighted_graph("g", g)
+t =  mst(g)
+print_weighted_graph("mst", t)
+combined = combine(t, g)
+print_weighted_multigraph("combined", combined)
+
+print("tour: " + str(create_tour(g, combined)))

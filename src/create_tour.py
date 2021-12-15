@@ -12,11 +12,7 @@ Performs an euler tour/hamilton tour in one go, shortcuts vertices if necessary
 Takes in a graph G as adj matrix and returns an adj matrix of the TSP tour
 """
 
-def create_tour(M, G): #Every vertex in G must have even degree
-
-    # adj matrix to return
-    # tspTour = [[0 for _ in range(len(G))] for _ in range(len(G))]
-    tsp_tour = nx.MultiGraph()
+def create_tour(M, G): #Every vertex in G must have even degree, G is a multigraph
 
     # keep track of all vertices that have been visited
     visited = set() 
@@ -51,10 +47,8 @@ def create_tour(M, G): #Every vertex in G must have even degree
             visited.add(curr_vertex) #mark vertex as visited
 
             next_vertex = get_next_vertex(curr_vertex)
-            if next_vertex != None:
-                edge_weight = G.get_edge_data(curr_vertex, next_vertex)[0]['weight']
-                tsp_tour.add_edge(curr_vertex, next_vertex, weight=edge_weight)
-            else:
+
+            if next_vertex == None:
                 raise Exception("Graph is not eulerian; cannot find tour")
 
             if len(visited) == len(G.nodes): # tour has been completed

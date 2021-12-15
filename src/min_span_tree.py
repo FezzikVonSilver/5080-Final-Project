@@ -35,7 +35,7 @@ def find_mst(G):
 		not_added = list(q.keys())
 		for i in not_added:
 			if G.has_edge(v, i):
-				edge_weight = G.get_edge_data(v, i)[0]['weight']
+				edge_weight = G[v][i]['weight']
 				if cost[i] > edge_weight:
 					cost[i] = edge_weight
 					prev[i] = v
@@ -46,7 +46,7 @@ def find_mst(G):
 Helper to construct tree. Returns networkx multigraph
 """
 def construct_mst(prev,cost):
-    mst = nx.MultiGraph()
+    mst = nx.Graph()
 
     for i in range(len(prev)):
         mst.add_node(i)

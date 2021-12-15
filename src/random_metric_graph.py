@@ -36,5 +36,7 @@ def randCompleteMetricGraph(n, w_rnge = (1,10)):
                 g.add_edge(i, j, weight=candidate_weight)
     return g
 
-g = randCompleteMetricGraph(5)
-print(g.adj)
+#main function
+if __name__ == "__main__":
+    g = randCompleteMetricGraph(5)
+    print(g.adj)

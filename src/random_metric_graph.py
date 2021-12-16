@@ -22,7 +22,7 @@ w_rnge: default edge weight range is 1 to 10
 
 return: adjacency matrix representing complete metric graph
 """
-def randCompleteMetricGraph(n, w_rnge = (1,10)):
+def randCompleteMetricGraph(n, w_rnge = (1,20)):
     g = nx.Graph()
     for i in range(n):
         g.add_node(i)

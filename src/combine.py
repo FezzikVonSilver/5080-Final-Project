@@ -82,13 +82,14 @@ def span_root_example(): #creates an MST with root 0 having 3 edges
 def print_weighted_graph(name, g):
 	print(f"{name}: {[(u,v,g[u][v]['weight']) for u,v in g.edges]}")
 
+#main function
+if __name__ == "__main__":
+	# g = rmg.randCompleteMetricGraph(4)
+	g = span_root_example()
+	print_weighted_graph("g", g)
+	t =  mst(g)
+	print_weighted_graph("mst", t)
+	combined = combine(t, g)
+	print_weighted_multigraph("combined", combined)
 
-# g = rmg.randCompleteMetricGraph(4)
-g = span_root_example()
-print_weighted_graph("g", g)
-t =  mst(g)
-print_weighted_graph("mst", t)
-combined = combine(t, g)
-print_weighted_multigraph("combined", combined)
-
-print("tour: " + str(create_tour(g, combined)))
+	print("tour: " + str(create_tour(g, combined)))

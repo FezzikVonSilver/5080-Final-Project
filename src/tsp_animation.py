@@ -37,7 +37,7 @@ def translate_TSP_Tour(n, TSP):
 def christo_animation(n):
 
     # create the starting random graph
-    g = rmg.randCompleteMetricGraph(6)
+    g = rmg.randCompleteMetricGraph(n)
     # g = com.span_root_example()
 
     # get the weights of the edges to label in graph
@@ -63,10 +63,9 @@ def christo_animation(n):
     # get tour
     tsp_tour = create_tour(M2, g)
     tour_edges = zip(list(tsp_tour))
-    # get tour cost, wrong?
+    # get tour cost
     tour_cost = str(round(ch.get_cost(g, tsp_tour), 2))
     
-
     # translate tour to draw easier
     g_tsp = translate_TSP_Tour(n+1, tsp_tour)
 
@@ -84,7 +83,7 @@ def christo_animation(n):
             nx.draw_networkx(g, pos, with_labels = True)
             # nx.draw(g, with_labels = True)
             # draw edge weight labels for troubleshooting
-            nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
+            # nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
             plt.title("Starting Graph", loc='center')
             plt.show()
             plt.savefig("figure1.png")
@@ -161,4 +160,4 @@ def christo_animation(n):
 
 #main function
 if __name__ == "__main__":
-    christo_animation(6)
+    christo_animation(20)

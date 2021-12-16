@@ -1,7 +1,7 @@
 from itertools import combinations
 import random_metric_graph as rmg
 from min_span_tree import mst
-from combine import combine, span_root_example
+from combine import combine
 from create_tour import create_tour
 import networkx as nx
 import numpy as np
@@ -43,12 +43,16 @@ def test_against_DP(V):
             test_nx_cost = get_cost(g,test_nx)
             test_us = our_christofides(g)
             test_us_cost =  get_cost(g,test_us)
+
+            print(test_nx_cost, test_us_cost)
             if test_us_cost/test_0[0] > 1.5:
                 print("--------------")
                 print("Number of vertices:" + str(i))
                 print("NX algorithm cost:" + str(test_nx_cost))
                 print("Our algorithm cost:" + str(test_us_cost))
                 print("Optimal cost:" + str(test_0[0]))
+                print("Our tour:"+str(test_us))
+                print("Their tour:"+str(test_nx))
             # print("Number of odd vertices:" + str(i - len(even_degree_vertices(mst(g)))))
                 print(nx.convert_matrix.to_numpy_array(g))
                 print(nx.convert_matrix.to_numpy_array(mst(g)))

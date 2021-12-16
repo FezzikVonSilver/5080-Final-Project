@@ -1,3 +1,4 @@
+from random import randbytes
 from create_tour import create_tour
 import numpy as np
 import networkx as nx
@@ -5,12 +6,6 @@ from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.matching import min_weight_matching
 from min_span_tree import mst
 import random_metric_graph as rmg
-
-def print_weighted_multigraph(name, wg):
-	print(f"{name}: ")
-	for u,v,w in wg.edges:
-		edge_data = wg.get_edge_data(u,v)
-		print(f"{(u,v)}: {edge_data}")
 
 """
 Return even degree vertices in MST graph as list. (Chose Even instead of odd because easier to induce subgraph)
@@ -71,24 +66,3 @@ def combine(T,G):
         combined_graph.add_edge(u, v, weight = weight)
     return combined_graph
 
-
-def span_root_example(): #creates an MST with root 0 having 3 edges
-	example = [(0, 1, 2), (0, 2, 2), (0, 3, 1), (1, 2, 4), (1, 3, 2), (2, 3, 2)]
-	newG = nx.Graph()
-	newG.add_weighted_edges_from(example)
-	return newG
-	# print("g: " + str([(u,v,newG[u][v]['weight']) for u,v in newG.edges]))
-
-def print_weighted_graph(name, g):
-	print(f"{name}: {[(u,v,g[u][v]['weight']) for u,v in g.edges]}")
-
-
-# g = rmg.randCompleteMetricGraph(4)
-g = span_root_example()
-print_weighted_graph("g", g)
-t =  mst(g)
-print_weighted_graph("mst", t)
-combined = combine(t, g)
-print_weighted_multigraph("combined", combined)
-
-print("tour: " + str(create_tour(g, combined)))

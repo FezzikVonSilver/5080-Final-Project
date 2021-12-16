@@ -32,18 +32,14 @@ def translate_TSP_Tour(n, TSP):
         return g2
 
 
+def christo_animation(n):
 
-#main function
-if __name__ == "__main__":
-
-    n = 4
     # create the starting random graph
     g = rmg.randCompleteMetricGraph(n)
 
     # get the weights of the edges to label in graph
     edge_labels = dict([((n1, n2), d['weight'])
                     for n1, n2, d in g.edges(data=True)])
-
 
     # set position using spring layout (this will result in the nodes displaying at the same position each time the same graph object is drawn if used in call)
     # pos = nx.spring_layout(g, seed=1)
@@ -76,7 +72,8 @@ if __name__ == "__main__":
         if frame == 0:
             # draw the full graph 
             nx.draw_networkx(g, pos)
-            nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
+            # draw edge weight labels for troubleshooting
+            # nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
             plt.title("Starting Graph", loc='center')
             plt.show()
             plt.savefig("figure1.png")
@@ -146,3 +143,7 @@ if __name__ == "__main__":
 
     # display the animation on screen in a popup window
     plt.show()
+
+#main function
+if __name__ == "__main__":
+    christo_animation(8)

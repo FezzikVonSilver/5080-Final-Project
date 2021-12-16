@@ -35,11 +35,19 @@ def translate_TSP_Tour(n, TSP):
 
 #main function
 if __name__ == "__main__":
+
+    n = 4
     # create the starting random graph
-    g = rmg.randCompleteMetricGraph(10)
+    g = rmg.randCompleteMetricGraph(n)
+
+    # get the weights of the edges to label in graph
+    edge_labels = dict([((n1, n2), d['weight'])
+                    for n1, n2, d in g.edges(data=True)])
+
 
     # set position using spring layout (this will result in the nodes displaying at the same position each time the same graph object is drawn if used in call)
-    pos = nx.spring_layout(g, seed=1)
+    # pos = nx.spring_layout(g, seed=1)
+    pos = nx.spring_layout(g)
 
     # get MST of g
     T = mst(g)
@@ -54,7 +62,7 @@ if __name__ == "__main__":
     # get tour
     tsp_tour = create_tour(M2, g)
     # translate tour to draw easier
-    g_tsp = translate_TSP_Tour(11, tsp_tour)
+    g_tsp = translate_TSP_Tour(n+1, tsp_tour)
 
     # create fig object for animation
     fig = plt.figure()
@@ -68,6 +76,7 @@ if __name__ == "__main__":
         if frame == 0:
             # draw the full graph 
             nx.draw_networkx(g, pos)
+            nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
             plt.title("Starting Graph", loc='center')
             plt.show()
             plt.savefig("figure1.png")

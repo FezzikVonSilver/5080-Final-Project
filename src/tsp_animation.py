@@ -113,7 +113,7 @@ if __name__ == "__main__":
         # draw combined min-weight matching and MST
         if frame == 5:
             nx.draw_networkx(M2, pos)
-            plt.title("Minimum Spanning Tree & Min-Weight Matching", loc='center')
+            plt.title("Minimum Spanning Tree & Min-Weight Matching Combined", loc='center')
             plt.show()
             plt.savefig("figure6.png")
             # print("5 - Min-Weight Matching & MST Combined")
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         # draw our TSP tour
         if frame >= 6:
             nx.draw_networkx(g_tsp, pos, edge_color='r')
-            plt.title("TSP Tour", loc='center')
+            plt.title("Christofides TSP Tour", loc='center')
             plt.show()
             plt.savefig("figure7.png")
             # print(tsp_tour)

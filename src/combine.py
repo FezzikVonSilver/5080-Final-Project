@@ -6,6 +6,7 @@ from networkx.convert_matrix import from_numpy_array
 from networkx.algorithms.matching import min_weight_matching
 from min_span_tree import mst
 import random_metric_graph as rmg
+import utils
 
 """
 Return even degree vertices in MST graph as list. (Chose Even instead of odd because easier to induce subgraph)
@@ -26,11 +27,6 @@ original graph G to keep track of nodes. Rows/columns of nodes v in V are 0. Ret
 PARAMS- V: vertices to exclude G: original graph
 """
 def induced_subgraph(V,G):
-    # if (len(V) == 0):
-    #     return G
-    # S = np.array(G)
-    # S[V] = 0
-    # S[:,V] = 0
     G = G.copy()
 
 	#remove even vertices from multigraph
@@ -42,9 +38,7 @@ Networkx min-weight perfect matching, returns a set of paris of vertices
 PARAMS- G: adjacency matrix
 """
 def perfect_match(G):
-	# G = np.array(G)
 	gnx = nx.Graph(G)
-
 	return min_weight_matching(gnx)
 """
 Add min-weight perfect matching to MST, returns the combined graph as a ndarray.
@@ -66,14 +60,11 @@ def combine(T,G):
         combined_graph.add_edge(u, v, weight = weight)
     return combined_graph
 
-def print_weighted_graph(name, g):
-	print(f"{name}: {[(u,v,g[u][v]['weight']) for u,v in g.edges]}")
-
 #main function
 if __name__ == "__main__":
 	g = rmg.randCompleteMetricGraph(4)
-	print_weighted_graph("g", g)
+	utils.print_weighted_graph("g", g)
 	t =  mst(g)
-	print_weighted_graph("mst", t)
+	utils.print_weighted_graph("mst", t)
 	combined = combine(t, g)
 	print(combined)	

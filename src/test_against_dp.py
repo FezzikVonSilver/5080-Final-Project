@@ -1,15 +1,21 @@
 from itertools import combinations
+from random import paretovariate
 import random_metric_graph as rmg
-from min_span_tree import mst
-from combine import combine
-from create_tour import create_tour
 import networkx as nx
 import numpy as np
 from networkx.algorithms.approximation.traveling_salesman import christofides
 from christofides import our_christofides
-from christofides import get_cost
 
+# total_count = 0
 
+def get_cost(G, tour):
+    cost = 0
+    for i in range(0, len(tour)-1):
+        u = tour[i]
+        v = tour[i+1] 
+        weight = G[u][v]['weight']
+        cost += weight
+    return cost
 
 def TSP(G):
 	n = len(G)
@@ -33,10 +39,13 @@ def TSP(G):
 
 
 def test_against_DP(V):
+    # global total_count
     count = 0
     iter = 0
     for i in np.arange(2,V+1):
         for j in range(10):
+            # print("COUNT: " + str(total_count)) 
+            # total_count += 1
             g = rmg.randCompleteMetricGraph(i)
             test_0 = TSP(nx.convert_matrix.to_numpy_array(g).tolist())
             test_nx = christofides(g)
@@ -44,6 +53,7 @@ def test_against_DP(V):
             test_us = our_christofides(g)
             test_us_cost =  get_cost(g,test_us)
 
+            # print(test_us)
             print(test_nx_cost, test_us_cost)
             if test_us_cost/test_0[0] > 1.5:
                 print("--------------")
@@ -61,5 +71,8 @@ def test_against_DP(V):
     return(count/iter)
 
 
-p = test_against_DP(10)
-print(p)
+# # for i in range(5, 10):
+# for _ in range(1000000):
+#     p = test_against_DP(5)
+#     print(p)
+# # print(p)

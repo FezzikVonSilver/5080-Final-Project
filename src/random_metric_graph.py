@@ -35,20 +35,3 @@ def randCompleteMetricGraph(n, w_rnge = (1,20)):
 
                 g.add_edge(i, j, weight=candidate_weight)
     return g
-
-# def randCompleteMetricGraph(n):
-#     D = 2 # dimensionality
-#     """
-#     Shamelessly cribbed from: 
-#     https://stackoverflow.com/questions/46346143/generating-a-complete-graph-in-metric-space
-#     """
-#     positions = np.random.rand(n, D)
-#     differences = positions[:, None, :] - positions[None, :, :]
-#     distances = np.sqrt(np.sum(differences**2, axis=-1)) # euclideand
-#     return nx.from_numpy_matrix(distances, create_using=nx.Graph())
-
-
-# #main function
-# if __name__ == "__main__":
-#     g = randCompleteMetricGraph(100)
-#     print(g.adj)

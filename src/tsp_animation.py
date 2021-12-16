@@ -83,7 +83,7 @@ def christo_animation(n):
             nx.draw_networkx(g, pos, with_labels = True)
             # nx.draw(g, with_labels = True)
             # draw edge weight labels for troubleshooting
-            # nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
+            nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
             plt.title("Starting Graph", loc='center')
             plt.show()
             plt.savefig("figure1.png")
@@ -160,4 +160,4 @@ def christo_animation(n):
 
 #main function
 if __name__ == "__main__":
-    christo_animation(20)
+    christo_animation(10)

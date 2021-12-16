@@ -14,14 +14,17 @@ def our_christofides(G):
     tsp_tour = create_tour(M, G)
     return tsp_tour
 
-n = 5
-rand_graph = rmg.randCompleteMetricGraph(n)
 
-our_tour = our_christofides(rand_graph)
-print(our_tour)
-# print(adj_matrix(our_tour,n))
-# print(to_array(our_tour))
+#main function
+if __name__ == "__main__":
+    n = 5
+    rand_graph = rmg.randCompleteMetricGraph(n)
 
-tour = christofides(nx.Graph(rand_graph))
-print(tour)
-# print(adj_matrix(tour,n))
+    our_tour = our_christofides(rand_graph)
+    print(our_tour)
+    # print(adj_matrix(our_tour,n))
+    # print(to_array(our_tour))
+
+    tour = christofides(nx.Graph(rand_graph))
+    print(tour)
+    # print(adj_matrix(tour,n))

@@ -13,6 +13,15 @@ def our_christofides(G):
     tsp_tour = create_tour(M, G)
     return tsp_tour
 
+def get_cost(G, tour):
+    cost = 0
+    for i in range(0, len(tour)-1):
+        u = tour[i]
+        v = tour[i+1] 
+        weight = G[u][v]['weight']
+        cost += weight
+    return cost
+
 if __name__ == 'main':
     G = rmg.randCompleteMetricGraph(5)
     print(our_christofides(G))

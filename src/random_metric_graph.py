@@ -12,7 +12,7 @@ import networkx as nx
 #         if G.has_edge(i, k) and G.has_edge(k, j): 
 #             ik_weight = G[i][k]['weight']
 #             kj_weight = G[k][j]['weight']
-#             if ik_weight + kj_weight < candidate_weight:
+#             if ik_weight + kj_weight < candidate_weight or candidate_weight + ik_weight < kj_weight or candidate_weight + kj_weight < ik_weight:
 #                 return False
 #     return True
 

@@ -43,5 +43,4 @@ def create_tour(M, G):
                         if len(path) == len(M.nodes):
                             return path+[g_v]
     
-# t = tour(rmg.randCompleteMetricGraph(4))
-# print(t)
+

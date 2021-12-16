@@ -66,3 +66,14 @@ def combine(T,G):
         combined_graph.add_edge(u, v, weight = weight)
     return combined_graph
 
+def print_weighted_graph(name, g):
+	print(f"{name}: {[(u,v,g[u][v]['weight']) for u,v in g.edges]}")
+
+#main function
+if __name__ == "__main__":
+	g = rmg.randCompleteMetricGraph(4)
+	print_weighted_graph("g", g)
+	t =  mst(g)
+	print_weighted_graph("mst", t)
+	combined = combine(t, g)
+	print(combined)	

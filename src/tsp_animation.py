@@ -1,6 +1,6 @@
-import random as r
-import numpy as np
-import time
+# import random as r
+# import numpy as np
+# import time
 
 # importing networkx
 import networkx as nx
@@ -40,38 +40,28 @@ def translate_TSP_Tour(n, TSP):
 g = rmg.randCompleteMetricGraph(10)
 
 # set position using spring layout (this will result in the nodes displaying at the same position each time the same graph object is drawn if used in call)
-# pos = nx.spring_layout(g, seed=123)
-pos = nx.spring_layout(g)
+pos = nx.spring_layout(g, seed=1)
 
 # get MST of g
 T = mst(g)
-
-# # even degree vertices?
-# E = com.even_degree_vertices(T)
-# path_edges = list(zip(E,E[1:]))
-
-
-# # vertices with odd?
-# S = com.induced_subgraph(E,g)
-
+# even degree vertices
 E = com.even_degree_vertices(T)
+# odd degree vertices subgraph
 S = com.induced_subgraph(E,g)
+# min weight perfect matching
 M = nx.MultiGraph(com.perfect_match(S))
-
-# get combined
+# MST and Min-Weight combined
 M2 = com.combine(T, g)
-
 # get tour
 tsp_tour = create_tour(M2, g)
-
-#translate to play nicely with drawing
+# translate tour to draw easier
 g_tsp = translate_TSP_Tour(11, tsp_tour)
 
 
 # create fig object for animation
 fig = plt.figure()
 
-# Function to animate steps in the TSP algorithm
+# Function to animate steps in the Christofides TSP algorithm
 def animate(frame):
     fig.clear()
 
@@ -95,39 +85,53 @@ def animate(frame):
     # Vertices with odd degree
     if frame == 2:
         # nx.draw_networkx(path_edges, pos)
-        # nx.draw_networkx_nodes(g, pos, nodelist=path_edges)
+        # nx.draw_networkx_nodes(g, pos, nodelist=(s.nodes)-set(path_edges)
+        nx.draw_networkx_nodes(g, pos)
+        nx.draw_networkx_nodes(g, pos, nodelist=(S), node_color='r')
         plt.title("Odd Degree Vertices in MST", loc='center')
         plt.show()
         # plt.savefig("odd-degree.png")
         print("2 - Odd Degree Vertices in MST")
 
+    # Subgraph of odd degree vertices
+    if frame == 3:
+        nx.draw_networkx_nodes(g, pos)
+        nx.draw_networkx(S, pos, node_color='r')
+        plt.title("Subgraph of Odd Degree Vertices", loc='center')
+        plt.show()
+        # plt.savefig("subgraph.png")
+        print("3 - Odd Degree Vertices Subgraph")
 
     # minimum weight matching
-    if frame == 3:
-        nx.draw_networkx(M, pos)
+    if frame == 4:
+        nx.draw_networkx_nodes(g, pos)
+        nx.draw_networkx(M, pos, node_color='r')
         plt.title("Min-Weight Matching", loc='center')
         plt.show()
         # plt.savefig("min-weight.png")
-        print("3 - Min-Weight Matching")
+        print("4 - Min-Weight Matching os Subgraph")
 
-
-    if frame == 4:
-        # draw combined min-weight matching and MST
+    # draw combined min-weight matching and MST
+    if frame == 5:
         nx.draw_networkx(M2, pos)
         plt.title("Minimum Spanning Tree & Min-Weight Matching", loc='center')
         plt.show()
         # plt.savefig("combined.png")
-        print("4 - Min-Weight Matching & MST Combined")
+        print("5 - Min-Weight Matching & MST Combined")
 
-    if frame >= 5:
-        # draw our TSP tour
+
+    # Euler Tour
+
+
+    # draw our TSP tour
+    if frame >= 6:
         nx.draw_networkx(g_tsp, pos, edge_color='r')
         plt.title("TSP Tour", loc='center')
         plt.show()
         # plt.savefig("tsp_tour.png")
         # print(tsp_tour)
         # print(g_tsp)
-        print("5 - TSP Tour")
+        print("6 - TSP Tour")
 
 
 
@@ -160,7 +164,7 @@ def animate(frame):
     return
 
 # create the animation object
-ani = animation.FuncAnimation(fig, animate, frames=6, interval=3000, repeat=False)
+ani = animation.FuncAnimation(fig, animate, frames=7, interval=2000, repeat=False)
 
 
 # display the animation on screen in a popup window
